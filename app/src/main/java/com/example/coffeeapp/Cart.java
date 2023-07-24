@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ public class Cart extends AppCompatActivity {
     private CoffeeDBHelper dbHelper = new CoffeeDBHelper(this);
     private int orderID;
     private double totalBill = 0.00;
+    private List<OrderDetails> orderList;
+    private List<Coffee> coffeeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +51,10 @@ public class Cart extends AppCompatActivity {
 
         // Fetch the coffee data from the database
         orderID = dbHelper.getOrderID();
+        Log.d("Cart", String.valueOf(orderID) );
         Toast.makeText(this, "Clicked on " + String.valueOf(orderID), Toast.LENGTH_SHORT).show();
-        List<OrderDetails> orderList = dbHelper.getAllOrder(orderID);
-        List<Coffee> coffeeList = dbHelper.getAllCoffee( orderList );
+        orderList = dbHelper.getAllOrder(orderID);
+        coffeeList = dbHelper.getAllCoffee( orderList );
 
         orderAdapter = new OrderAdapter( this, orderList, coffeeList );
         orderAdapter.setupSwipeToDelete(recyclerView);
@@ -62,11 +67,35 @@ public class Cart extends AppCompatActivity {
     }
 
     private void setupOnClickListener() {
+
+        // Back button
         ImageButton backButton = findViewById( R.id.backButton02 );
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        // Checkout button
+        RelativeLayout checkoutButton = findViewById( R.id.checkoutButton );
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.updateID();
+                orderID = dbHelper.getOrderID();
+
+                orderList.clear();
+                coffeeList.clear();
+
+                orderList = dbHelper.getAllOrder(orderID);
+                coffeeList = dbHelper.getAllCoffee( orderList );
+
+                orderAdapter.notifyDataSetChanged();
+
+                updateBill();
+
+                Log.d("Cart", "Click button " + String.valueOf(orderID) );
             }
         });
     }

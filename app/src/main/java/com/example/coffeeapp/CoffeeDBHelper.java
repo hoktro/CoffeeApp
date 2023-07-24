@@ -20,6 +20,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
     // Table name and column names
     private static final String TABLE_COFFEE = "coffee_table";
     private static final String TABLE_ORDER = "order_table";
+    private static final String TABLE_USER = "user_table";
     private static final String TABLE_ORDER_HISTORY = "order_history";
 
 
@@ -43,7 +44,13 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
 
     // Column set for order history table
 
-
+    private static final String USER_NAME = "name";
+    private static final String USER_PHONE = "phone";
+    private static final String USER_EMAIL = "email";
+    private static final String USER_ADDRESS = "address";
+    private static final String USER_LOYAL = "loyal";
+    private static final String USER_REDEEM = "redeem";
+    private static final String USER_ORDER = "ID";
 
     // Prepare for creation table query
     private static final String CREATE_TABLE_COFFEE = "CREATE TABLE " + TABLE_COFFEE + "("
@@ -64,6 +71,16 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             + TOTAL_BILL + " DOUBLE NOT NULL" +
             ")";
 
+    private static final String CREATE_TABLE_USER = "CREATE TABLE " + TABLE_USER + "("
+            + USER_NAME + " TEXT, "
+            + USER_PHONE + " TEXT, "
+            + USER_EMAIL + " TEXT, "
+            + USER_ADDRESS + " TEXT,"
+            + USER_LOYAL + " INTEGER NOT NULL, "
+            + USER_REDEEM + " INTEGER NOT NULL, "
+            + USER_ORDER + " INTEGER NOT NULL "
+            + ")";
+
 
     public CoffeeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -74,11 +91,45 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL( CREATE_TABLE_COFFEE );
         db.execSQL( CREATE_TABLE_ORDER );
-    }
+        db.execSQL( CREATE_TABLE_USER );
 
+        // initializeUserData();
+        // OrderID = getOrderID();
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Handle database upgrades if needed
+    }
+
+    public void initializeUserData() {
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return;
+        }
+
+        if( cursor.getCount() == 0 ) {
+            ContentValues values = new ContentValues();
+            values.put( USER_NAME, "Vic Luu" );
+            values.put( USER_PHONE, "0777428999" );
+            values.put( USER_ADDRESS, "120/19 Tran Binh Trong, P.2, Q.5, HCM" );
+            values.put( USER_LOYAL, 3 );
+            values.put( USER_REDEEM, 1806 );
+            values.put( USER_ORDER, 1 );
+            db.insert( TABLE_USER, null, values );
+            OrderID = 1;
+        }
+        else {
+            int index = cursor.getColumnIndex( USER_ORDER );
+            if( index >= 0 ) while ( cursor.moveToNext() ) OrderID = cursor.getInt( index );
+        }
+
+        cursor.close();
+        db.close();
     }
 
     public void initializeCoffeeData() {
@@ -97,7 +148,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         }
 
     }
-
     private void insertCoffeeData( Coffee coffee ) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -131,7 +181,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
-
     public List<Coffee> getAllCoffee() {
         List<Coffee> coffeeList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -170,11 +219,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         db.close();
         return coffeeList;
     }
-
-    public void increaseOrderID() {
-        OrderID = OrderID + 1;
-    }
-
     public void insertOrderData( OrderDetails details ) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -287,7 +331,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
-
     public List<OrderDetails> getAllOrder( int orderID ) {
 
         List<OrderDetails> orderList = new ArrayList<>();
@@ -331,7 +374,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         db.close();
         return orderList;
     }
-
     public List<Coffee> getAllCoffee( List<OrderDetails> orderList ) {
         List<Coffee> coffeeList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -374,7 +416,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         db.close();
         return coffeeList;
     }
-
     public Coffee getCoffee( int CoffeeID ) {
         SQLiteDatabase db = getReadableDatabase();
         Coffee coffee = null;
@@ -412,7 +453,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         // db.close();
         return coffee;
     }
-
     public int getCoffeeID( String name ) {
         SQLiteDatabase db = getReadableDatabase();
         int result = 0;
@@ -436,7 +476,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-
     public double getTotalBill( int orderID ) {
         SQLiteDatabase db = getReadableDatabase();
 
@@ -459,8 +498,24 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-    public int getOrderID() { return OrderID; }
+    public int getOrderID() {
+        SQLiteDatabase db = getReadableDatabase();
+        int result = 1;
 
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return result;
+        }
+
+        int idIndex = cursor.getColumnIndex( USER_ORDER );
+        if( idIndex >= 0 ) while ( cursor.moveToNext() ) result = cursor.getInt(idIndex);
+
+        cursor.close();
+        db.close();
+        return result;
+    }
     public void removeOrder(OrderDetails details) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -472,4 +527,149 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         db.delete( TABLE_ORDER, selection, selectionArgs );
         db.close();
     }
+    public void updateUser( User user ) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return;
+        }
+
+        int nameIndex = cursor.getColumnIndex( USER_NAME );
+        int phoneIndex = cursor.getColumnIndex( USER_PHONE );
+        int emailIndex = cursor.getColumnIndex( USER_EMAIL );
+        int addressIndex = cursor.getColumnIndex( USER_ADDRESS );
+        int loyalIndex = cursor.getColumnIndex( USER_LOYAL );
+        int redeemIndex = cursor.getColumnIndex( USER_REDEEM );
+        int idIndex = cursor.getColumnIndex( USER_ORDER );
+
+        if( nameIndex >= 0 && cursor.getCount() > 0 ) {
+            while (cursor.moveToNext()) {
+                ContentValues values = new ContentValues();
+                values.put( USER_NAME, user.getName() );
+                values.put( USER_PHONE, user.getPhone() );
+                values.put( USER_EMAIL, user.getEmail() );
+                values.put( USER_ADDRESS, user.getAddress() );
+                values.put( USER_LOYAL, cursor.getInt( loyalIndex ) );
+                values.put( USER_REDEEM, cursor.getInt( redeemIndex ) );
+                values.put( USER_ORDER, cursor.getInt( idIndex ) );
+                db.update( TABLE_USER, values, null, null );
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+    public void updateLoyal( int delta ) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return;
+        }
+
+        int nameIndex = cursor.getColumnIndex( USER_NAME );
+        int phoneIndex = cursor.getColumnIndex( USER_PHONE );
+        int emailIndex = cursor.getColumnIndex( USER_EMAIL );
+        int addressIndex = cursor.getColumnIndex( USER_ADDRESS );
+        int loyalIndex = cursor.getColumnIndex( USER_LOYAL );
+        int redeemIndex = cursor.getColumnIndex( USER_REDEEM );
+        int idIndex = cursor.getColumnIndex( USER_ORDER );
+
+        if( nameIndex >= 0 && cursor.getCount() > 0 ) {
+            while (cursor.moveToNext()) {
+                ContentValues values = new ContentValues();
+                values.put( USER_NAME, cursor.getString( nameIndex ) );
+                values.put( USER_PHONE, cursor.getString( phoneIndex ) );
+                values.put( USER_EMAIL, cursor.getString( emailIndex ) );
+                values.put( USER_ADDRESS, cursor.getString( addressIndex ) );
+
+                int newLoyal = cursor.getInt( loyalIndex ) + delta;
+                if( newLoyal > 8 ) newLoyal = 8;
+                values.put( USER_LOYAL, newLoyal );
+
+                values.put( USER_REDEEM, cursor.getInt( redeemIndex ) );
+                values.put( USER_ORDER, cursor.getInt( idIndex ) );
+                db.update( TABLE_USER, values, null, null );
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+    public void updateRedeem( int delta ) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return;
+        }
+
+        int nameIndex = cursor.getColumnIndex( USER_NAME );
+        int phoneIndex = cursor.getColumnIndex( USER_PHONE );
+        int emailIndex = cursor.getColumnIndex( USER_EMAIL );
+        int addressIndex = cursor.getColumnIndex( USER_ADDRESS );
+        int loyalIndex = cursor.getColumnIndex( USER_LOYAL );
+        int redeemIndex = cursor.getColumnIndex( USER_REDEEM );
+        int idIndex = cursor.getColumnIndex( USER_ORDER );
+
+        if( nameIndex >= 0 && cursor.getCount() > 0 ) {
+            while (cursor.moveToNext()) {
+                ContentValues values = new ContentValues();
+                values.put( USER_NAME, cursor.getString( nameIndex ) );
+                values.put( USER_PHONE, cursor.getString( phoneIndex ) );
+                values.put( USER_EMAIL, cursor.getString( emailIndex ) );
+                values.put( USER_ADDRESS, cursor.getString( addressIndex ) );
+                values.put( USER_LOYAL, cursor.getInt( loyalIndex ) );
+
+                int newRedeem = cursor.getInt( redeemIndex ) + delta;
+                values.put( USER_REDEEM, newRedeem );
+
+                values.put( USER_ORDER, cursor.getInt( idIndex ) );
+                db.update( TABLE_USER, values, null, null );
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+    public void updateID() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return;
+        }
+
+        int nameIndex = cursor.getColumnIndex( USER_NAME );
+        int phoneIndex = cursor.getColumnIndex( USER_PHONE );
+        int emailIndex = cursor.getColumnIndex( USER_EMAIL );
+        int addressIndex = cursor.getColumnIndex( USER_ADDRESS );
+        int loyalIndex = cursor.getColumnIndex( USER_LOYAL );
+        int redeemIndex = cursor.getColumnIndex( USER_REDEEM );
+        int idIndex = cursor.getColumnIndex( USER_ORDER );
+
+        if( nameIndex >= 0 && cursor.getCount() > 0 ) {
+            while (cursor.moveToNext()) {
+                ContentValues values = new ContentValues();
+                values.put( USER_NAME, cursor.getString( nameIndex ) );
+                values.put( USER_PHONE, cursor.getString( phoneIndex ) );
+                values.put( USER_EMAIL, cursor.getString( emailIndex ) );
+                values.put( USER_ADDRESS, cursor.getString( addressIndex ) );
+                values.put( USER_LOYAL, cursor.getInt( loyalIndex ) );
+                values.put( USER_REDEEM, cursor.getInt( redeemIndex ) );
+                values.put( USER_ORDER, cursor.getInt( idIndex ) + 1 );
+                db.update( TABLE_USER, values, null, null );
+                OrderID = cursor.getInt( idIndex ) + 1;
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+
 }

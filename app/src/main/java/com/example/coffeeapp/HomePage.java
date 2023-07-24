@@ -35,6 +35,7 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
 
         // setup RecycleView
         dbHelper.initializeCoffeeData();
+        dbHelper.initializeUserData();
         setupRecycleView();
 
         // setup Listener

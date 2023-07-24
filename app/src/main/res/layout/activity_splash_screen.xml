@@ -7,17 +7,27 @@
     android:background="@drawable/splash_background"
     tools:context=".SplashScreen">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="121dp"
+        android:layout_height="132dp"
+        android:layout_marginTop="259dp"
+        android:background="@drawable/app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="15dp"/>
+
     <TextView
         android:id="@+id/ordinary_co"
         android:layout_width="325dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="52dp"
-        android:fontFamily="@font/lugrasimo_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
         android:gravity="center_horizontal|top"
         android:text="@string/ordinary_co"
         android:textAppearance="@style/ordinary_co"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

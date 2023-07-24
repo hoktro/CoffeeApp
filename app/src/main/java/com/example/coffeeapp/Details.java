@@ -47,7 +47,7 @@ public class Details extends AppCompatActivity {
         coffeeName.setText( coffee.getName() );
 
         coffeeID = dbHelper.getCoffeeID( coffee.getName() );
-        Toast.makeText(this, "Clicked on " + String.valueOf(coffeeID), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Clicked on " + String.valueOf(coffeeID), Toast.LENGTH_SHORT).show();
         price = coffee.getPrice();
 
         ImageView coffeeImage = findViewById( R.id.details_image );
@@ -305,6 +305,16 @@ public class Details extends AppCompatActivity {
                 OrderDetails newOrder = new OrderDetails( coffeeID, number_of_cup, shot, hot, size, ice );
                 dbHelper.insertOrderData( newOrder );
                 finish();
+            }
+        });
+
+        // Setting for cart button
+        ImageButton cartButton = findViewById( R.id.cartButton2 );
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( Details.this, Cart.class );
+                startActivity( intent );
             }
         });
 

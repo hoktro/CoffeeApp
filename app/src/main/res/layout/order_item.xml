@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="327dp"
+    android:layout_height="96dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:background="@drawable/gray_rec12">
+
+    <ImageView
+        android:id="@+id/coffeeImage"
+        android:layout_width="82dp"
+        android:layout_height="61dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="17dp"
+        android:src="@drawable/americano"/>
+
+    <TextView
+        android:id="@+id/coffeeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignTop="@+id/coffeeImage"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="103dp"
+
+        android:textSize="12sp"
+        android:textColor="#001833"
+        android:textStyle="bold"
+        android:text="Americano" />
+
+    <TextView
+        android:id="@+id/coffeeDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/coffeeName"
+        android:layout_alignStart="@+id/coffeeName"
+
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="3dp"
+        android:text="single | iced | medium | full ice"
+        android:textColor="#757575"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/coffeeAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/coffeeDescription"
+        android:layout_alignStart="@+id/coffeeName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+
+        android:text="x 1"
+        android:textColor="#91000000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/coffeeTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="6dp"
+        android:text="$3.00"
+        android:textColor="#001833"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

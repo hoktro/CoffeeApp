@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CoffeeApp</string>
+    <string name="ordinary_co">Limerence</string>
+    <string name="choose_your">Choose your coffee</string>
+    <string name="loyalty_car">Loyalty card</string>
+    <string name="good_morning">Good morning</string>
+    <string name="user_name">Vic Luu</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="total_amount">Total Amount</string>
+</resources>

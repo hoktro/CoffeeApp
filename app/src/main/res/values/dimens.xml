@@ -6,4 +6,6 @@
     <dimen name="right_margin">25dp</dimen>
     <dimen name="item_width">154dp</dimen>
     <dimen name="item_height">164dp</dimen>
+    <dimen name="item_spacing">21dp</dimen> <!-- Change 8dp to the desired spacing value -->
+
 </resources>

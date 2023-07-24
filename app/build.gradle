@@ -32,6 +32,8 @@ dependencies {
 
     implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+    implementation 'androidx.cardview:cardview:1.0.0' // Use the latest version available
+
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'

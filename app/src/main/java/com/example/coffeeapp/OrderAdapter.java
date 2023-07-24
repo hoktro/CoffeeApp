@@ -1,24 +1,33 @@
 package com.example.coffeeapp;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
+    private final Context context;
     private List<OrderDetails> orderList;
     private List<Coffee> coffeeList;
 
-    public OrderAdapter( List<OrderDetails> orderList, List<Coffee> coffeeList ) {
+    public OrderAdapter(Context context, List<OrderDetails> orderList, List<Coffee> coffeeList ) {
+        this.context = context;
         this.orderList = orderList;
         this.coffeeList = coffeeList;
     }
@@ -91,10 +100,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
     }
 
+
+
     // Helper method to remove an item from the RecyclerView
     public void removeItem(int position) {
+
+        CoffeeDBHelper dbHelper = new CoffeeDBHelper( context );
+        dbHelper.removeOrder(orderList.get(position));
+
         orderList.remove(position);
         coffeeList.remove(position);
+
+        // Call onItemDeleted in YourActivity
+        if (context instanceof Cart) {
+            ((Cart) context).updateBill();
+        }
+
         notifyItemRemoved(position);
     }
 
@@ -110,6 +131,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 removeItem(position);
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor( ContextCompat.getColor( context, R.color.delete_color) )
+                        .addSwipeLeftCornerRadius(TypedValue.COMPLEX_UNIT_DIP, 15 )
+                        .addSwipeLeftActionIcon(R.drawable.delete_icon)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
 

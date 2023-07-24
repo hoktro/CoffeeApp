@@ -51,9 +51,14 @@ public class Cart extends AppCompatActivity {
         List<OrderDetails> orderList = dbHelper.getAllOrder(orderID);
         List<Coffee> coffeeList = dbHelper.getAllCoffee( orderList );
 
-        orderAdapter = new OrderAdapter( orderList, coffeeList );
-        recyclerView.setAdapter(orderAdapter);
+        orderAdapter = new OrderAdapter( this, orderList, coffeeList );
+        orderAdapter.setupSwipeToDelete(recyclerView);
 
+        // Add spacing between items in the RecyclerView (use a desired spacing value in pixels)
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_spacing); // Replace R.dimen.item_spacing with the dimension resource for your desired spacing
+        recyclerView.addItemDecoration(new ItemSpacingDecoration(spacingInPixels));
+
+        recyclerView.setAdapter(orderAdapter);
     }
 
     private void setupOnClickListener() {
@@ -66,7 +71,7 @@ public class Cart extends AppCompatActivity {
         });
     }
 
-    private void updateBill() {
+    public void updateBill() {
         totalBill = dbHelper.getTotalBill( orderID );
         double roundedTotal = Math.round(totalBill * 100.0) / 100.0; // Round to two decimal places
 

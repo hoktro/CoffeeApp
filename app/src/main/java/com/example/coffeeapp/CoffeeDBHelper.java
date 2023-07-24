@@ -461,4 +461,15 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
     }
     public int getOrderID() { return OrderID; }
 
+    public void removeOrder(OrderDetails details) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selection = ORDER_ID + "=?" + " AND " + COFFEE_ID + "=?"
+                + " AND " + SHOT + "=?" + " AND " + HOT + "=?" + " AND " + SIZE + "=?"
+                + " AND " + ICE + "=?";
+        String[] selectionArgs = { String.valueOf(OrderID), String.valueOf(details.getCoffeeID()), String.valueOf(details.getShot()), String.valueOf(details.getHot()), String.valueOf(details.getSize()), String.valueOf(details.getIce()) };
+
+        db.delete( TABLE_ORDER, selection, selectionArgs );
+        db.close();
+    }
 }

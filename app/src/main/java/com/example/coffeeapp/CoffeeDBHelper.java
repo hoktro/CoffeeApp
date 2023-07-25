@@ -116,6 +116,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put( USER_NAME, "Vic Luu" );
             values.put( USER_PHONE, "0777428999" );
+            values.put( USER_EMAIL, "Hoktro18@gmail.com" );
             values.put( USER_ADDRESS, "120/19 Tran Binh Trong, P.2, Q.5, HCM" );
             values.put( USER_LOYAL, 3 );
             values.put( USER_REDEEM, 1806 );

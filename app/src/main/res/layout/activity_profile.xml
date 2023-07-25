@@ -4,6 +4,259 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parentLayout"
     tools:context=".Profile">
+
+    <TextView
+        android:id="@+id/profileTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="55dp"
+        android:gravity="center_horizontal|top"
+        android:lineSpacingExtra="0sp"
+        android:text="Profile"
+        android:textAppearance="@style/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    For name -->
+
+    <LinearLayout
+        android:id="@+id/profile_linear01"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/circle_drawable"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileTitle">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/profile_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/profile_01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:text="Full name"
+        android:textColor="#D8D8D8"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/profile_linear01"
+        app:layout_constraintTop_toTopOf="@+id/profile_linear01" />
+
+    <EditText
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background = "@android:color/transparent"
+
+        android:text="Vic Luu"
+        android:textColor="#324A59"
+        android:textSize="14sp"
+        android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="@+id/profile_01"
+        app:layout_constraintTop_toBottomOf="@+id/profile_01"
+
+        android:enabled="false"
+        />
+
+    <ImageView
+        android:id="@+id/editName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/edit_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_01" />
+
+    <!--       For phone number    -->
+
+    <LinearLayout
+        android:id="@+id/profile_linear02"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/circle_drawable"
+
+        android:gravity="center"
+
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/profile_linear01"
+        app:layout_constraintTop_toBottomOf="@+id/profile_linear01">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/phone_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/profile_02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:text="Phone number"
+        android:textColor="#D8D8D8"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/profile_linear02"
+        app:layout_constraintTop_toTopOf="@+id/profile_linear02" />
+
+    <EditText
+        android:id="@+id/profilePhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+
+        android:text="+84777428999"
+        android:textColor="#324A59"
+        android:textSize="14sp"
+        android:textStyle="bold"
+
+        android:enabled="false"
+
+        app:layout_constraintStart_toStartOf="@+id/profile_02"
+        app:layout_constraintTop_toBottomOf="@+id/profile_02" />
+
+    <ImageView
+        android:id="@+id/editPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/edit_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_02" />
+
+    <!--    For email       -->
+
+    <LinearLayout
+        android:id="@+id/profile_linear03"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/circle_drawable"
+
+        android:gravity="center"
+
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/profile_linear02"
+        app:layout_constraintTop_toBottomOf="@+id/profile_linear02">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/email_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/profile_03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:text="Email"
+        android:textColor="#D8D8D8"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/profile_linear03"
+        app:layout_constraintTop_toTopOf="@+id/profile_linear03" />
+
+    <EditText
+        android:id="@+id/profileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+
+        android:text="hoktro18@gmail.com"
+        android:textColor="#324A59"
+        android:textSize="14sp"
+        android:textStyle="bold"
+
+        android:enabled="false"
+
+        app:layout_constraintStart_toStartOf="@+id/profile_03"
+        app:layout_constraintTop_toBottomOf="@+id/profile_03" />
+
+    <ImageView
+        android:id="@+id/editEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/edit_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_03" />
+
+    <!--    For address -->
+    <LinearLayout
+        android:id="@+id/profile_linear04"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/circle_drawable"
+
+        android:gravity="center"
+
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/profile_linear03"
+        app:layout_constraintTop_toBottomOf="@+id/profile_linear03">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/address_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/profile_04"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:text="Address"
+        android:textColor="#D8D8D8"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/profile_linear04"
+        app:layout_constraintTop_toTopOf="@+id/profile_linear04" />
+
+    <EditText
+        android:id="@+id/profileAddress"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+
+        android:text="120/19 Tran Binh Trong, P.2, Q.5, HCM"
+        android:textColor="#324A59"
+        android:textSize="14sp"
+        android:textStyle="bold"
+
+        android:enabled="false"
+
+        app:layout_constraintStart_toStartOf="@+id/profile_04"
+        app:layout_constraintTop_toBottomOf="@+id/profile_04" />
+
+    <ImageView
+        android:id="@+id/editAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/edit_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_04" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -86,6 +87,15 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent( HomePage.this, Cart.class );
+                startActivity( intent );
+            }
+        });
+
+        ImageButton profileButton = findViewById( R.id.profileButton );
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( HomePage.this, Profile.class );
                 startActivity( intent );
             }
         });

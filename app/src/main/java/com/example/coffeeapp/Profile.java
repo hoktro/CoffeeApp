@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,67 +17,195 @@ import android.widget.Toast;
 
 public class Profile extends AppCompatActivity {
 
+    private User user;
+    private final CoffeeDBHelper dbHelper = new CoffeeDBHelper( this );
+
+    private EditText nameEdit;
+    private EditText phoneEdit;
+    private EditText emailEdit;
+    private EditText addressEdit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_profile);
 
+        nameEdit = findViewById(R.id.profileName);
+        phoneEdit = findViewById(R.id.profilePhone);
+        emailEdit = findViewById(R.id.profileEmail);
+        addressEdit = findViewById(R.id.profileAddress);
+
+        updateScreen();
+
         setListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateScreen();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updateInfo();
+    }
+
     private void setListener() {
+
+        // Test
+        nameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newText = s.toString();
+                if (newText.isEmpty()) {
+                    nameEdit.setText(" ");
+                    nameEdit.setSelection(1);
+                } else if((newText.length() == 2) && (newText.charAt(0) == ' ')) {
+                    newText = newText.substring(1);
+                    nameEdit.setText(newText);
+                }
+            }
+        });
+        phoneEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newText = s.toString();
+                if (newText.isEmpty()) {
+                    phoneEdit.setText(" ");
+                    phoneEdit.setSelection(1);
+                } else if((newText.length() == 2) && (newText.charAt(0) == ' ')) {
+                    newText = newText.substring(1);
+                    phoneEdit.setText(newText);
+                }
+            }
+        });
+        emailEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newText = s.toString();
+                if (newText.isEmpty()) {
+                    emailEdit.setText(" ");
+                    emailEdit.setSelection(1);
+                } else if((newText.length() == 2) && (newText.charAt(0) == ' ')) {
+                    newText = newText.substring(1);
+                    emailEdit.setText(newText);
+                }
+            }
+        });
+        addressEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newText = s.toString();
+                if (newText.isEmpty()) {
+                    addressEdit.setText(" ");
+                    addressEdit.setSelection(1);
+                } else if((newText.length() == 2) && (newText.charAt(0) == ' ')) {
+                    newText = newText.substring(1);
+                    addressEdit.setText(newText);
+                }
+            }
+        });
+
+        //
 
         Log.d("Profile", "setListener" );
 
         ConstraintLayout parentLayout = findViewById(R.id.parentLayout);
 
+        // Back arrow
+        ImageButton backButton = findViewById( R.id.profile_backButton );
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         // Edit name
         ImageView editName = findViewById( R.id.editName );
-        EditText profileName = findViewById( R.id.profileName );
 
         editName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("Profile", "Click button editName" );
-                profileName.setEnabled( true );
-                profileName.requestFocus();
+                nameEdit.setEnabled( true );
+                nameEdit.requestFocus();
             }
         });
 
         // Edit phone
         ImageView editPhone = findViewById( R.id.editPhone );
-        EditText profilePhone = findViewById( R.id.profilePhone );
 
         editPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profilePhone.setEnabled( true );
-                profilePhone.requestFocus();
+                phoneEdit.setEnabled( true );
+                phoneEdit.requestFocus();
             }
         });
 
         // Edit email
         ImageView editEmail = findViewById( R.id.editEmail );
-        EditText profileEmail = findViewById( R.id.profileEmail );
 
         editEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileEmail.setEnabled( true );
-                profileEmail.requestFocus();
+                emailEdit.setEnabled( true );
+                emailEdit.requestFocus();
             }
         });
 
         // Edit name
         ImageView editAddress = findViewById( R.id.editAddress );
-        EditText profileAddress = findViewById( R.id.profileAddress );
 
         editAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileAddress.setEnabled( true );
-                profileAddress.requestFocus();
+                addressEdit.setEnabled( true );
+                addressEdit.requestFocus();
             }
         });
 
@@ -84,20 +214,25 @@ public class Profile extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // Check if the EditText has focus and the touch event is outside the EditText
-                if (profileName.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), profileName)) {
-                    profileName.setEnabled(false); // Disable editing
+                if (nameEdit.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), nameEdit)) {
+                    nameEdit.setEnabled(false); // Disable editing
+                    user.changeName(String.valueOf(nameEdit.getText()));
+                    Log.d("Profile", "name change: " + user.getName() );
                 }
                 // Check if the EditText has focus and the touch event is outside the EditText
-                if (profilePhone.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), profilePhone)) {
-                    profilePhone.setEnabled(false); // Disable editing
+                if (phoneEdit.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), phoneEdit)) {
+                    phoneEdit.setEnabled(false); // Disable editing
+                    user.changePhone(String.valueOf(phoneEdit.getText()));
                 }
                 // Check if the EditText has focus and the touch event is outside the EditText
-                if (profileEmail.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), profileEmail)) {
-                    profileEmail.setEnabled(false); // Disable editing
+                if (emailEdit.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), emailEdit)) {
+                    emailEdit.setEnabled(false); // Disable editing
+                    user.changeEmail(String.valueOf(emailEdit.getText()));
                 }
                 // Check if the EditText has focus and the touch event is outside the EditText
-                if (profileAddress.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), profileAddress)) {
-                    profileAddress.setEnabled(false); // Disable editing
+                if (addressEdit.hasFocus() && !isPointInsideView(event.getRawX(), event.getRawY(), addressEdit)) {
+                    addressEdit.setEnabled(false); // Disable editing
+                    user.changeAddress(String.valueOf(addressEdit.getText()));
                 }
                 return false;
             }
@@ -113,5 +248,19 @@ public class Profile extends AppCompatActivity {
         int viewWidth = view.getWidth();
         int viewHeight = view.getHeight();
         return (x > viewX && x < (viewX + viewWidth) && y > viewY && y < (viewY + viewHeight));
+    }
+
+    private void updateScreen() {
+        // Get current user data
+        user = dbHelper.getUser();
+        nameEdit.setText( user.getName() );
+        phoneEdit.setText( user.getPhone() );
+        emailEdit.setText( user.getEmail() );
+        addressEdit.setText( user.getAddress() );
+    }
+
+    private void updateInfo() {
+        Log.d("Profile", "name update: " + user.getName() );
+        dbHelper.updateUser( user );
     }
 }

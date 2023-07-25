@@ -132,7 +132,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
-
     public void initializeCoffeeData() {
         // Sample coffee menu data
         List<Coffee> coffeeList = new ArrayList<>();
@@ -671,6 +670,35 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+    }
+
+    public User getUser() {
+        SQLiteDatabase db = getReadableDatabase();
+        User user = null;
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null);
+        if( cursor == null ) {
+            cursor.close();
+            db.close();
+            return user;
+        }
+
+        int nameIndex = cursor.getColumnIndex( USER_NAME );
+        int phoneIndex = cursor.getColumnIndex( USER_PHONE );
+        int emailIndex = cursor.getColumnIndex( USER_EMAIL );
+        int addressIndex = cursor.getColumnIndex( USER_ADDRESS );
+
+        if( nameIndex >= 0 && cursor.getCount() > 0 ) {
+            cursor.moveToFirst();
+            String user_name = cursor.getString( nameIndex );
+            String user_phone = cursor.getString( phoneIndex );
+            String user_email = cursor.getString( emailIndex );
+            String user_address = cursor.getString( addressIndex );
+            user = new User( user_name, user_phone, user_email, user_address );
+        }
+        cursor.close();
+        db.close();
+        return user;
     }
 
 }

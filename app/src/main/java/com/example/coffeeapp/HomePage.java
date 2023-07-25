@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.List;
 public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemClickListener {
 
     private CoffeeAdapter coffeeAdapter;
+    private User user;
 
     // Get an instance of the CoffeeDBHelper
     private CoffeeDBHelper dbHelper = new CoffeeDBHelper(this);
@@ -41,8 +43,16 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
 
         // setup Listener
         setupOnClickListener();
+
+        // Update screen
+        updateScreen();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateScreen();
+    }
 
     private void setupRecycleView() {
 
@@ -99,6 +109,12 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
                 startActivity( intent );
             }
         });
+    }
+
+    private void updateScreen() {
+        user = dbHelper.getUser();
+        TextView user_name = findViewById( R.id.user_name );
+        user_name.setText( user.getName() );
     }
 
 }

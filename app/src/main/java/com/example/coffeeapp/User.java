@@ -23,4 +23,9 @@ public class User implements Serializable {
     public String getEmail() { return email; }
     public String getAddress() { return address; }
 
+    public void changeName( String name ) { this.name = name; }
+    public void changePhone( String phone ) { this.phone = phone; }
+    public void changeEmail( String email ) { this.email = email; }
+    public void changeAddress( String address ) { this.address = address; }
+
 }

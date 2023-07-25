@@ -7,6 +7,17 @@
     android:id="@+id/parentLayout"
     tools:context=".Profile">
 
+    <ImageButton
+        android:id="@+id/profile_backButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="backArrow"
+
+        app:layout_constraintStart_toStartOf="@+id/profile_linear01"
+        app:layout_constraintTop_toTopOf="@+id/profileTitle"
+        app:srcCompat="@drawable/leftarrow" />
+
     <TextView
         android:id="@+id/profileTitle"
         android:layout_width="wrap_content"

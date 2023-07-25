@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,15 +84,20 @@ public class Cart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbHelper.updateID();
-                orderID = dbHelper.getOrderID();
+//                orderID = dbHelper.getOrderID();
+//
+//                orderList.clear();
+//                coffeeList.clear();
+//
+//                orderList = dbHelper.getAllOrder(orderID);
+//                coffeeList = dbHelper.getAllCoffee( orderList );
+//
+//                orderAdapter.notifyDataSetChanged();
 
-                orderList.clear();
-                coffeeList.clear();
-
-                orderList = dbHelper.getAllOrder(orderID);
-                coffeeList = dbHelper.getAllCoffee( orderList );
-
-                orderAdapter.notifyDataSetChanged();
+                Intent intent = new Intent( Cart.this, OrderSuccess.class );
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
 
                 updateBill();
 

@@ -48,7 +48,7 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
 
         // Update screen
         updateScreen();
-        ImageButton homeButton = findViewById( R.id.homeButton );
+        ImageButton homeButton = findViewById( R.id.homeButton_homepage );
         int color = Color.parseColor("#324A59");
         ColorStateList colorStateList = ColorStateList.valueOf(color);
         homeButton.setBackgroundTintList(colorStateList);
@@ -113,6 +113,17 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
             public void onClick(View v) {
                 Intent intent = new Intent( HomePage.this, Profile.class );
                 startActivity( intent );
+            }
+        });
+
+        ImageButton historyButton = findViewById( R.id.historyButton_homepage );
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( HomePage.this, MyOrder.class );
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
     }

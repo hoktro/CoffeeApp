@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="32dp"
+    android:paddingTop="23dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/line">
+
+    <TextView
+        android:id="@+id/historyTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+
+        android:text="24 June | 12:30 PM"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:textColor="#D8D8D8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/history01"
+        android:layout_width="13dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/large"
+        android:backgroundTint="#324A59"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyTime" />
+
+    <TextView
+        android:id="@+id/historyDescribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:maxWidth="200dp"
+        android:text="Americano"
+        android:textColor="#80324A59"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/history01"
+        app:layout_constraintTop_toTopOf="@+id/history01" />
+
+    <ImageView
+        android:id="@+id/history02"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/address_icon"
+        android:backgroundTint="#324A59"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history01" />
+
+    <TextView
+        android:id="@+id/historyAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+
+        android:text="3 Addersion Court Chino Hills, HO56824, United State"
+        android:textColor="#80324A59"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/history02"
+        app:layout_constraintTop_toTopOf="@+id/history02" />
+
+    <TextView
+        android:id="@+id/historyTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$3.00"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#80324A59"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/historyTime"
+        android:layout_marginEnd="15dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

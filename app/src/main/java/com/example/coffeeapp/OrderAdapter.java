@@ -39,7 +39,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item, parent, false);
         return new OrderViewHolder(itemView);
     }
-
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.OrderViewHolder holder, int position) {
         Log.d("OrderAdapter", "onBindViewHolder called for position: " + position);
@@ -74,12 +73,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         holder.orderDescription.setText( describe );
     }
-
     @Override
     public int getItemCount() {
         return orderList.size();
     }
-
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
         ImageView orderImageView;

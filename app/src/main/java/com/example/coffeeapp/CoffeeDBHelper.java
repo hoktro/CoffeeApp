@@ -9,8 +9,13 @@ import android.util.Log;
 // import android.widget.Toast;
 
 // import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CoffeeDBHelper extends SQLiteOpenHelper {
 
@@ -42,8 +47,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
     private static final String ICE = "ice";
     private static final String TOTAL_BILL = "total_bill";
 
-    // Column set for order history table
-
+    // Column set for user table
     private static final String USER_NAME = "name";
     private static final String USER_PHONE = "phone";
     private static final String USER_EMAIL = "email";
@@ -51,6 +55,12 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
     private static final String USER_LOYAL = "loyal";
     private static final String USER_REDEEM = "redeem";
     private static final String USER_ORDER = "ID";
+
+    // Column set for order history table
+    private static final String ORDER_TIME = "time";
+    private static final String ORDER_NAME = "name";
+    private static final String ORDER_PHONE = "phone";
+    private static final String ORDER_ADDRESS = "address";
 
     // Prepare for creation table query
     private static final String CREATE_TABLE_COFFEE = "CREATE TABLE " + TABLE_COFFEE + "("
@@ -81,17 +91,24 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             + USER_ORDER + " INTEGER NOT NULL "
             + ")";
 
+    private static final  String CREATE_TABLE_HISTORY = "CREATE TABLE " + TABLE_ORDER_HISTORY + "("
+            + ORDER_ID + " INTEGER NOT NULL, "
+            + ORDER_TIME + " DATETIME NOT NULL, "
+            + ORDER_NAME + " TEXT, "
+            + ORDER_PHONE + " TEXT, "
+            + ORDER_ADDRESS + " TEXT"
+            + ")";
+
 
     public CoffeeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL( CREATE_TABLE_COFFEE );
         db.execSQL( CREATE_TABLE_ORDER );
         db.execSQL( CREATE_TABLE_USER );
+        db.execSQL( CREATE_TABLE_HISTORY );
 
         // initializeUserData();
         // OrderID = getOrderID();
@@ -669,9 +686,12 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
+
+        // Push order to history
+        pushOrder( OrderID );
+
         db.close();
     }
-
     public User getUser() {
         SQLiteDatabase db = getReadableDatabase();
         User user = null;
@@ -699,6 +719,171 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return user;
+    }
+
+    private void pushOrder( int ID ) {
+        User current_user = getUser();
+
+        SQLiteDatabase db = getWritableDatabase();
+        Log.d("pushOrder", "pushData" );
+
+        // Get the current date and time in ISO 8601 format
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateTime = sdf.format(new Date());
+
+        Log.d("pushOrder", currentDateTime );
+
+        // Now, insert the data into the table with the DATETIME value
+        ContentValues values = new ContentValues();
+        values.put( ORDER_ID, String.valueOf( ID - 1 ) );
+        values.put( ORDER_TIME, currentDateTime );
+        values.put( ORDER_NAME, current_user.getName() );
+        values.put( ORDER_PHONE, current_user.getPhone() );
+        values.put( ORDER_ADDRESS, current_user.getAddress() );
+        db.insert( TABLE_ORDER_HISTORY, null, values );
+
+        db.close();
+    }
+
+    public List<OrderHistory> getHistory() {
+        SQLiteDatabase db = getReadableDatabase();
+        // Get the time that is 30 minutes before the current time in SQLite datetime format
+        // Get the time that is 30 minutes before the current time in SQLite datetime format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, -30);
+        String thirtyMinutesAgo = dateFormat.format(cal.getTime());
+
+        // Build the SQL query to select tuples earlier than thirty minutes ago
+        // String[] columns = new String[]{COLUMN_ID, COLUMN_DATETIME};
+        String selection = ORDER_TIME + " < ?";
+        String[] selectionArgs = new String[]{thirtyMinutesAgo};
+
+        Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, selection, selectionArgs, null, null, null);
+
+        List<OrderHistory> result = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                // Prepare orderDetails list
+                int orderID = cursor.getInt( cursor.getColumnIndexOrThrow(ORDER_ID) );
+                // List<OrderDetails> orderDetails = getAllOrder( orderID );
+
+                // Prepare orderTime
+
+                String[] orderTime = new String[2];
+                String datetimeValue = cursor.getString(cursor.getColumnIndexOrThrow(ORDER_TIME));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                try {
+                    Date dateTime = sdf.parse(datetimeValue);
+                    SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+                    orderTime[0] = dateOnlyFormat.format(dateTime); // Date
+                    orderTime[1] = timeOnlyFormat.format(dateTime); // Time
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                // Prepare current user
+                String userName = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_NAME) );
+                String userPhone = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_PHONE) );
+                String userAddress = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_ADDRESS) );
+                User user = new User( userName, userPhone, null, userAddress  );
+
+                // Push to result list
+                // result.add( new OrderHistory( orderID, orderDetails, orderTime, user ) );
+                result.add( new OrderHistory( orderID, orderTime, user ) );
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return result;
+    }
+    public List<OrderHistory> getOnGoing() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Log.d("Get Ongoing", " ============ On going track start ========== " );
+
+        // Get the time that is 30 minutes before the current time in SQLite datetime format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, -30);
+        String thirtyMinutesAgo = dateFormat.format(cal.getTime());
+
+        // Build the SQL query to select tuples earlier than thirty minutes ago
+        String selection = ORDER_TIME + " >= ?";
+        String[] selectionArgs = new String[]{thirtyMinutesAgo};
+
+        Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, selection, selectionArgs, null, null, null);
+        // Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, null, null, null, null, null);
+
+        Log.d("Get Ongoing", "Tuples: " + String.valueOf(cursor.getCount()) );
+
+        List<OrderHistory> result = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                // Prepare orderDetails list
+                int orderID = cursor.getInt( cursor.getColumnIndexOrThrow(ORDER_ID) );
+                // List<OrderDetails> orderDetails = getAllOrder( orderID );
+
+                // Prepare orderTime
+
+                String[] orderTime = new String[2];
+                String datetimeValue = cursor.getString(cursor.getColumnIndexOrThrow(ORDER_TIME));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                try {
+                    Date dateTime = sdf.parse(datetimeValue);
+                    SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+                    orderTime[0] = dateOnlyFormat.format(dateTime); // Date
+                    orderTime[1] = timeOnlyFormat.format(dateTime); // Time
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.d("Get Ongoing", orderTime[0] + " | " + orderTime[1] );
+
+                // Prepare current user
+                String userName = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_NAME) );
+                String userPhone = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_PHONE) );
+                String userAddress = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_ADDRESS) );
+                User user = new User( userName, userPhone, null, userAddress  );
+
+                // Push to result list
+                // result.add( new OrderHistory( orderID, orderDetails, orderTime, user ) );
+                result.add( new OrderHistory( orderID, orderTime, user ) );
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return result;
+    }
+
+    public String getDescription( int ID ) {
+        String result = "";
+        List<OrderDetails> orderDetailsList = getAllOrder( ID );
+
+        for( OrderDetails details : orderDetailsList ) {
+            Coffee coffee = getCoffee( details.getCoffeeID() );
+            result += coffee.getName() + " x " + String.valueOf( details.getAmount() );
+            result += ", ";
+        }
+
+        return result;
     }
 
 }

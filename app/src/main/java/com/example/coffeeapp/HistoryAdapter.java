@@ -47,9 +47,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         Log.d("HistoryAdapter", String.valueOf(OnGoing));
         if( OnGoing == 1 ) {
             Log.d("HistoryAdapter", "change colorrrrr " );
-            holder.historyDescribe.setTextColor(Color.parseColor("#324A59"));
-            holder.historyTotal.setTextColor(Color.parseColor("#324A59"));
-            holder.historyAddress.setTextColor(Color.parseColor("#324A59"));
+            holder.historyDescribe.setTextColor(Color.parseColor("#D8D8D8"));
+            holder.historyTotal.setTextColor(Color.parseColor("#D8D8D8"));
+            holder.historyAddress.setTextColor(Color.parseColor("#D8D8D8"));
         }
         else {
 

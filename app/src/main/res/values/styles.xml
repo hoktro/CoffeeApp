@@ -3,7 +3,6 @@
     <style name="ordinary_co">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">#FFFAF6</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="choose_your">
@@ -16,7 +15,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">-0.01</item>
         <item name="android:textColor">#001833</item>
-        <item name="fontFamily">@font/pacifico_regular</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="good_morning">
@@ -27,7 +26,7 @@
     <style name="user_name">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#001833</item>
-        <item name="android:textStyle">bold</item>
+
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -40,27 +39,23 @@
         <item name="android:textSize">20sp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">#001833</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="details">
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">-0.01</item>
         <item name="android:textColor">#001833</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- styles.xml -->
     <style name="add_to_cart">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="total_amount">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#001833</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

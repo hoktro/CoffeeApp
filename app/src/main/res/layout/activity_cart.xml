@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Cart">
+    tools:context=".Activity.Cart">
 
     <ImageButton
         android:id="@+id/backButton02"
@@ -25,9 +25,9 @@
         android:layout_marginTop="25dp"
         android:letterSpacing="-0.01"
         android:text="My Cart"
+        android:fontFamily="@font/pacifico_regular"
         android:textColor="#001833"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/backButton02"
         app:layout_constraintTop_toBottomOf="@+id/backButton02" />
 
@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:letterSpacing="-0.01"
         android:text="Total Price"
+        android:fontFamily="@font/pacifico_regular"
         android:textColor="#38001833"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -64,6 +65,7 @@
         android:layout_marginStart="30dp"
         android:letterSpacing="-0.01"
         android:text="$ 0.00"
+        android:fontFamily="@font/pacifico_regular"
         android:textColor="#001833"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -103,9 +105,9 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="14dp"
             android:text="Checkout"
+            android:fontFamily="@font/pacifico_regular"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

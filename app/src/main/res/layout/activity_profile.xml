@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/parentLayout"
-    tools:context=".Profile">
+    tools:context=".Activity.Profile">
 
     <ImageButton
         android:id="@+id/profile_backButton"
@@ -29,6 +29,7 @@
         android:gravity="center_horizontal|top"
         android:lineSpacingExtra="0sp"
         android:text="Profile"
+        android:fontFamily="@font/pacifico_regular"
         android:textAppearance="@style/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +62,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="3dp"
         android:text="Full name"
+
         android:textColor="#D8D8D8"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/profile_linear01"

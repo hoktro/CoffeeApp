@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="$3.00"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/pacifico_regular"
         android:textColor="#80324A59"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/historyTime"

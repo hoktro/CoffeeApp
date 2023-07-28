@@ -9,10 +9,15 @@ import android.util.Log;
 // import android.widget.Toast;
 
 // import java.text.DecimalFormat;
+import com.example.coffeeapp.Class.OrderHistory;
+import com.example.coffeeapp.Class.Coffee;
+import com.example.coffeeapp.Class.OrderDetails;
+import com.example.coffeeapp.Class.User;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +66,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
     private static final String ORDER_NAME = "name";
     private static final String ORDER_PHONE = "phone";
     private static final String ORDER_ADDRESS = "address";
+    private static final String ORDER_COMPLETE = "complete";
 
     // Prepare for creation table query
     private static final String CREATE_TABLE_COFFEE = "CREATE TABLE " + TABLE_COFFEE + "("
@@ -96,7 +102,8 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             + ORDER_TIME + " DATETIME NOT NULL, "
             + ORDER_NAME + " TEXT, "
             + ORDER_PHONE + " TEXT, "
-            + ORDER_ADDRESS + " TEXT"
+            + ORDER_ADDRESS + " TEXT,"
+            + ORDER_COMPLETE + " INTEGER NOT NULL "
             + ")";
 
 
@@ -135,7 +142,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             values.put( USER_PHONE, "0777428999" );
             values.put( USER_EMAIL, "Hoktro18@gmail.com" );
             values.put( USER_ADDRESS, "120/19 Tran Binh Trong, P.2, Q.5, HCM" );
-            values.put( USER_LOYAL, 3 );
+            values.put( USER_LOYAL, 7 );
             values.put( USER_REDEEM, 1806 );
             values.put( USER_ORDER, 1 );
             db.insert( TABLE_USER, null, values );
@@ -245,25 +252,6 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
 
         Log.d("Query", "You have go for this !!!!!!!!!!!");
 
-//        double totalValue = details.getAmount() * ( price + 0.1 * details.getSize() );
-//        double roundedTotal = Math.round(totalValue * 100.0) / 100.0; // Round to two decimal places
-//
-//        ContentValues values = new ContentValues();
-//
-//        values.put( ORDER_ID, OrderID );
-//        values.put( COFFEE_ID, details.getCoffeeID() );
-//        values.put( AMOUNT, details.getAmount() );
-//        values.put( SHOT, details.getShot() );
-//        values.put( HOT, details.getHot() );
-//        values.put( SIZE, details.getSize() );
-//        values.put( ICE, details.getIce() );
-//        values.put( TOTAL_BILL, roundedTotal );
-//
-//        db.insert( TABLE_ORDER, null, values);
-//        db.close();
-
-        // Check if the coffee order exists in the table
-
         String selection = ORDER_ID + "=?" + " AND " + COFFEE_ID + "=?"
                 + " AND " + SHOT + "=?" + " AND " + HOT + "=?" + " AND " + SIZE + "=?"
                 + " AND " + ICE + "=?";
@@ -291,6 +279,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
             Log.d("Query", "Go for null ");
 
             double totalValue = details.getAmount() * ( price + 0.1 * details.getSize() );
+            if( details.getAmount() <= 0 ) totalValue = 0;
             double roundedTotal = Math.round(totalValue * 100.0) / 100.0; // Round to two decimal places
 
             ContentValues values = new ContentValues();
@@ -327,7 +316,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
                 oldAmount += cursor.getInt(getAmountIndex);
             }
         }
-
+        if( details.getAmount() + oldAmount <= 0 ) totalValue = 0;
         double roundedTotal = Math.round(totalValue * 100.0) / 100.0; // Round to two decimal places
 
         ContentValues values = new ContentValues();
@@ -740,6 +729,7 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         values.put( ORDER_NAME, current_user.getName() );
         values.put( ORDER_PHONE, current_user.getPhone() );
         values.put( ORDER_ADDRESS, current_user.getAddress() );
+        values.put( ORDER_COMPLETE, String.valueOf(0) );
         db.insert( TABLE_ORDER_HISTORY, null, values );
 
         db.close();
@@ -747,17 +737,20 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
 
     public List<OrderHistory> getHistory() {
         SQLiteDatabase db = getReadableDatabase();
-        // Get the time that is 30 minutes before the current time in SQLite datetime format
-        // Get the time that is 30 minutes before the current time in SQLite datetime format
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, -30);
-        String thirtyMinutesAgo = dateFormat.format(cal.getTime());
 
-        // Build the SQL query to select tuples earlier than thirty minutes ago
-        // String[] columns = new String[]{COLUMN_ID, COLUMN_DATETIME};
-        String selection = ORDER_TIME + " < ?";
-        String[] selectionArgs = new String[]{thirtyMinutesAgo};
+//        // Get the time that is 30 minutes before the current time in SQLite datetime format
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//        Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.MINUTE, -30);
+//        String thirtyMinutesAgo = dateFormat.format(cal.getTime());
+//
+//        // Build the SQL query to select tuples earlier than thirty minutes ago
+//        // String[] columns = new String[]{COLUMN_ID, COLUMN_DATETIME};
+//        String selection = ORDER_TIME + " < ?";
+//        String[] selectionArgs = new String[]{thirtyMinutesAgo};
+
+        String selection = ORDER_COMPLETE + " = ?";
+        String[] selectionArgs = new String[]{String.valueOf(1)};
 
         Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, selection, selectionArgs, null, null, null);
 
@@ -804,6 +797,8 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
+        Collections.reverse(result);
+
         return result;
     }
     public List<OrderHistory> getOnGoing() {
@@ -811,15 +806,18 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
 
         Log.d("Get Ongoing", " ============ On going track start ========== " );
 
-        // Get the time that is 30 minutes before the current time in SQLite datetime format
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, -30);
-        String thirtyMinutesAgo = dateFormat.format(cal.getTime());
+//        // Get the time that is 30 minutes before the current time in SQLite datetime format
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//        Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.MINUTE, -30);
+//        String thirtyMinutesAgo = dateFormat.format(cal.getTime());
+//
+//        // Build the SQL query to select tuples earlier than thirty minutes ago
+//        String selection = ORDER_TIME + " >= ?";
+//        String[] selectionArgs = new String[]{thirtyMinutesAgo};
 
-        // Build the SQL query to select tuples earlier than thirty minutes ago
-        String selection = ORDER_TIME + " >= ?";
-        String[] selectionArgs = new String[]{thirtyMinutesAgo};
+        String selection = ORDER_COMPLETE + " = ?";
+        String[] selectionArgs = new String[]{String.valueOf(0)};
 
         Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, selection, selectionArgs, null, null, null);
         // Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, null, null, null, null, null);
@@ -870,6 +868,64 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
+        Collections.reverse(result);
+
+        return result;
+    }
+    public List<OrderHistory> getRewardsHistory() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, null, null, null, null, null);
+        // Cursor cursor = db.query( TABLE_ORDER_HISTORY, null, null, null, null, null, null);
+
+        Log.d("Get Ongoing", "Tuples: " + String.valueOf(cursor.getCount()) );
+
+        List<OrderHistory> result = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                // Prepare orderDetails list
+                int orderID = cursor.getInt( cursor.getColumnIndexOrThrow(ORDER_ID) );
+                // List<OrderDetails> orderDetails = getAllOrder( orderID );
+
+                // Prepare orderTime
+
+                String[] orderTime = new String[2];
+                String datetimeValue = cursor.getString(cursor.getColumnIndexOrThrow(ORDER_TIME));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                try {
+                    Date dateTime = sdf.parse(datetimeValue);
+                    SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+                    orderTime[0] = dateOnlyFormat.format(dateTime); // Date
+                    orderTime[1] = timeOnlyFormat.format(dateTime); // Time
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.d("Get Ongoing", orderTime[0] + " | " + orderTime[1] );
+
+                // Prepare current user
+                String userName = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_NAME) );
+                String userPhone = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_PHONE) );
+                String userAddress = cursor.getString( cursor.getColumnIndexOrThrow(ORDER_ADDRESS) );
+                User user = new User( userName, userPhone, null, userAddress  );
+
+                // Push to result list
+                // result.add( new OrderHistory( orderID, orderDetails, orderTime, user ) );
+                result.add( new OrderHistory( orderID, orderTime, user ) );
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        Collections.reverse(result);
+
         return result;
     }
 
@@ -879,10 +935,49 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
 
         for( OrderDetails details : orderDetailsList ) {
             Coffee coffee = getCoffee( details.getCoffeeID() );
-            result += coffee.getName() + " x " + String.valueOf( details.getAmount() );
+            result += coffee.getName() + " x " + String.valueOf( Math.abs(details.getAmount()) );
             result += ", ";
         }
 
+        return result;
+    }
+
+    public void removeHistory( int orderID ) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selection = ORDER_ID + " = ?";
+        String[] selectionArgs = new String[]{ String.valueOf(orderID) };
+
+        ContentValues values = new ContentValues();
+        values.put( ORDER_COMPLETE, 1 );
+        db.update( TABLE_ORDER_HISTORY, values, selection, selectionArgs );
+
+        db.close();
+    }
+
+    public int getLoyalPoint() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        int index = cursor.getColumnIndexOrThrow( USER_LOYAL );
+        cursor.moveToFirst();
+        int result = cursor.getInt(index);
+        Log.d("Loyal", String.valueOf(result) );
+        cursor.close();
+        db.close();
+        return result;
+    }
+
+    public int getRedeemPoint() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query( TABLE_USER, null, null, null, null, null, null );
+        int index = cursor.getColumnIndexOrThrow( USER_REDEEM );
+        cursor.moveToFirst();
+        int result = cursor.getInt(index);
+        Log.d("Redeem", String.valueOf(result) );
+        cursor.close();
+        db.close();
         return result;
     }
 

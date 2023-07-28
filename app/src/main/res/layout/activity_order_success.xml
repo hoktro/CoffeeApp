@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrderSuccess">
+    tools:context=".Activity.OrderSuccess">
 
     <ImageView
         android:id="@+id/success_image"
@@ -23,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Order Success"
+        android:fontFamily="@font/pacifico_regular"
         android:textColor="#181D2D"
         android:textSize="22sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/success_image" />
@@ -39,6 +39,7 @@
         android:layout_marginEnd="45dp"
         android:text="Your order has been placed successfully. \n
 For more details, go to my orders."
+        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="#AAAAAA"
         android:textSize="14sp"
@@ -57,6 +58,7 @@ For more details, go to my orders."
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Track My Order"
+        android:fontFamily="@font/pacifico_regular"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="14sp"

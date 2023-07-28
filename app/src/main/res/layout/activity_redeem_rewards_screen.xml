@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.RedeemRewardsScreen">
+
+    <ImageButton
+        android:id="@+id/backButton03"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="25dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="backArrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        app:srcCompat="@drawable/leftarrow" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:fontFamily="@font/pacifico_regular"
+        android:text="Redeem"
+        android:textColor="#001833"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/RedeemItem01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/RedeemImage01"
+            android:layout_width="82dp"
+            android:layout_height="61dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="22dp"
+            android:src="@drawable/americano" />
+
+        <TextView
+            android:id="@+id/RedeemName01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RedeemImage01"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/RedeemImage01"
+            android:text="Americano"
+            android:textColor="#324A59"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RedeemTime01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/RedeemName01"
+            android:layout_alignStart="@+id/RedeemName01"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="2dp"
+            android:text="Valid until 31.12.23"
+            android:textColor="#80324A59"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RedeemButton01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RedeemName01"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="41dp"
+            android:background="@drawable/green_30"
+            android:text="1340 pts"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RedeemItem02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RedeemItem01">
+
+        <ImageView
+            android:id="@+id/RedeemImage02"
+            android:layout_width="82dp"
+            android:layout_height="61dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="22dp"
+            android:src="@drawable/flat_white" />
+
+        <TextView
+            android:id="@+id/RedeemName02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RedeemImage02"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/RedeemImage02"
+            android:text="Flat White"
+            android:textColor="#324A59"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RedeemTime02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/RedeemName02"
+            android:layout_alignStart="@+id/RedeemName02"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="2dp"
+            android:text="Valid until 31.12.23"
+            android:textColor="#80324A59"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RedeemButton02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RedeemName02"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="41dp"
+            android:background="@drawable/green_30"
+            android:text="1340 pts"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RedeemItem03"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RedeemItem02">
+
+        <ImageView
+            android:id="@+id/RedeemImage03"
+            android:layout_width="82dp"
+            android:layout_height="61dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="22dp"
+            android:src="@drawable/cappuccino" />
+
+        <TextView
+            android:id="@+id/RedeemName03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RedeemImage03"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/RedeemImage03"
+            android:text="Cappuccino"
+            android:textColor="#324A59"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RedeemTime03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/RedeemName03"
+            android:layout_alignStart="@+id/RedeemName03"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="2dp"
+            android:text="Valid until 31.12.23"
+            android:textColor="#80324A59"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RedeemButton03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RedeemName03"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="41dp"
+            android:background="@drawable/green_30"
+            android:text="1340 pts"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"/>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

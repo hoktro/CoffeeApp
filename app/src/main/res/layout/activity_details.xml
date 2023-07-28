@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Details">
+    tools:context=".Activity.Details">
 
     <ImageButton
         android:id="@+id/cartButton2"
@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="45dp"
         android:text="Details"
+        android:fontFamily="@font/pacifico_regular"
         android:textAppearance="@style/title"
         app:layout_constraintBottom_toTopOf="@+id/details_imageContain"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,6 +85,7 @@
             android:layout_marginBottom="21dp"
             android:layout_weight="1"
             android:text="TextView"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
         <LinearLayout
@@ -164,6 +166,7 @@
             android:layout_marginBottom="21dp"
             android:layout_weight="1"
             android:text="Shot"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
         <TextView
@@ -184,6 +187,7 @@
             android:orientation="horizontal"
             android:backgroundTint="@color/black"
             android:text="Single"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
         <TextView
@@ -201,6 +205,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:text="Double"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
 
@@ -228,6 +233,7 @@
             android:layout_marginBottom="21dp"
             android:layout_weight="1"
             android:text="Select"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
         <Button
@@ -282,6 +288,7 @@
             android:layout_marginBottom="21dp"
             android:layout_weight="1"
             android:text="Size"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
         <Button
@@ -345,6 +352,7 @@
             android:layout_marginBottom="21dp"
             android:layout_weight="1"
             android:text="Ice"
+            android:textStyle="bold"
             android:textAppearance="@style/details" />
 
         <Button
@@ -395,6 +403,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="23dp"
         android:text="@string/total_amount"
+        android:fontFamily="@font/pacifico_regular"
         android:textAppearance="@style/total_amount"
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintStart_toStartOf="@+id/addButton" />
@@ -405,6 +414,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="23dp"
         android:text="$ 3.00"
+        android:fontFamily="@font/pacifico_regular"
         android:textAppearance="@style/total_amount"
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="@+id/addButton" />
@@ -417,6 +427,7 @@
         android:background="@drawable/green_30"
         android:text="@string/add_to_cart"
         android:textAppearance="@style/add_to_cart"
+        android:fontFamily="@font/pacifico_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/select_size"
         app:layout_constraintHorizontal_bias="0.498"

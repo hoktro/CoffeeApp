@@ -37,10 +37,6 @@
             android:name=".Activity.HomePage"
             android:exported="false" />
         <activity
-            android:name=".Activity.MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Design.NoActionBar" />
-        <activity
             android:name=".Activity.SplashScreen"
             android:exported="true">
             <intent-filter>

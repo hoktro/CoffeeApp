@@ -17,6 +17,7 @@ import com.example.coffeeapp.Class.User;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -927,6 +928,34 @@ public class CoffeeDBHelper extends SQLiteOpenHelper {
         Collections.reverse(result);
 
         return result;
+    }
+
+    public void clearCacheHistory() {
+        SQLiteDatabase db = getWritableDatabase();
+
+
+        // Get the time that is 30 minutes before the current time in SQLite datetime format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -15);
+        String fifteenDayAgo = dateFormat.format(cal.getTime());
+
+        // Build the SQL query to select tuples earlier than thirty minutes ago
+        String selection = ORDER_TIME + " < ?";
+        String[] selectionArgs = new String[]{fifteenDayAgo};
+
+        // Step 1: Create the subquery to get ORDER_IDs from TABLE_ORDER based on the given condition
+        String sub_query = "SELECT order_id FROM order_history WHERE " + selection;
+
+        // Step 2: Execute the DELETE query with the subquery as a condition
+        String deleteSelection = "order_id IN (" + sub_query + ")";
+
+        // Step 3: Perform the delete operation on the database
+        int rowsDeleted = db.delete(TABLE_ORDER, deleteSelection, selectionArgs);
+
+        db.delete( TABLE_ORDER_HISTORY, selection, selectionArgs );
+
+        db.close();
     }
 
     public String getDescription( int ID ) {

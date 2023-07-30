@@ -42,8 +42,8 @@ public class HomePage extends AppCompatActivity implements CoffeeAdapter.OnItemC
         setContentView(R.layout.activity_home_page);
 
         // setup RecycleView
-        dbHelper.initializeCoffeeData();
-        dbHelper.initializeUserData();
+        // dbHelper.initializeCoffeeData();
+        // dbHelper.initializeUserData();
         setupRecycleView();
 
         // setup Listener

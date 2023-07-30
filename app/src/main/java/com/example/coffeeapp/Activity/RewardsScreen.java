@@ -46,9 +46,9 @@ public class RewardsScreen extends AppCompatActivity {
         redeemPoint = findViewById( R.id.redeemPoint_rewards);
         loyalCount = findViewById( R.id.loyal_count_rewards );
 
-        updateScreen();
         setupRecycleView();
         setupOnClickListener();
+        updateScreen();
     }
 
     @Override
@@ -129,6 +129,8 @@ public class RewardsScreen extends AppCompatActivity {
     private void updateScreen() {
         redeem_point = dbHelper.getRedeemPoint();
         loyal_point = dbHelper.getLoyalPoint();
+        loyalAdapter.changOnGoing(loyal_point);
+        loyalAdapter.notifyDataSetChanged();
         redeemPoint.setText( String.valueOf(redeem_point));
         loyalCount.setText( String.valueOf(loyal_point) + " / 8");
     }
